@@ -34,6 +34,11 @@ func (s *server) Hover(ctx context.Context, params *protocol.HoverParams) (_ *pr
 	}
 	defer release()
 
+	rng := protocol.Range{Start: params.Position, End: params.Position}
+	if params.Range != nil {
+		rng = *params.Range
+	}
+
 	switch snapshot.FileKind(fh) {
 	case file.Mod:
 		return mod.Hover(ctx, snapshot, fh, params.Position)
@@ -49,7 +54,7 @@ func (s *server) Hover(ctx context.Context, params *protocol.HoverParams) (_ *pr
 				}
 			}
 		}
-		return golang.Hover(ctx, snapshot, fh, params.Position, pkgURL)
+		return golang.Hover(ctx, snapshot, fh, rng, pkgURL)
 	case file.Tmpl:
 		return template.Hover(ctx, snapshot, fh, params.Position)
 	case file.Work:
