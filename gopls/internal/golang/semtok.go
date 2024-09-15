@@ -61,7 +61,7 @@ func SemanticTokens(ctx context.Context, snapshot *cache.Snapshot, fh file.Handl
 	// should only be returned for exceptions (a word not
 	// otherwise defined). This code treats a too-large file as an
 	// exception. On parse errors, the code does what it can.
-	const maxFullFileSize = 100000
+	const maxFullFileSize = 10000000
 	if int(end-start) > maxFullFileSize {
 		return nil, fmt.Errorf("semantic tokens: range %s too large (%d > %d)",
 			fh.URI().Path(), end-start, maxFullFileSize)
