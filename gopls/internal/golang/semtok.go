@@ -560,7 +560,11 @@ func (tv *tokenVisitor) ident(id *ast.Ident) {
 			(id.Name == "iota" || id.Name == "true" || id.Name == "false") {
 			emit(semtok.TokVariable, "readonly", "defaultLibrary")
 		} else {
-			emit(semtok.TokVariable, "readonly")
+			if id.Name != "iota" && id.Name != "true" && id.Name != "false" {
+				emit(semtok.TokVariable, "const")
+			} else {
+				emit(semtok.TokKeyword)
+			}
 		}
 	case *types.Func:
 		emit(semtok.TokFunction)
